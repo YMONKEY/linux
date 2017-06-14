@@ -5,9 +5,9 @@ reading-notes
 
 ----
 
-# 资料
+### 资料
 
-	* linux上搭建SVN
-	* linux安装php运行环境
+* linux上搭建SVN
+* linux安装php运行环境
 	
 	
