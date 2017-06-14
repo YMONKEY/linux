@@ -1,0 +1,48 @@
+操作系统：centos7.2
+
+yum list installed //列出已经安装的所有的rpm包
+yum list extras //列出已经安装的但是不包含在资源库中的rpm包
+yum list | grep php //列出所有的php
+
+yum -y update //升级所有包，改变软件设置和系统设置,系统版本内核都升级
+yum -y upgrade //升级所有包，不改变软件设置和系统设置，系统版本升级，内核不改变
+
+cat /proc/version // 查看centos版本
+
+//追加yum源（centos6.5）
+# rpm -Uvh http://ftp.iij.ad.jp/pub/linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+# rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+
+//centos7.0源
+# yum install epel-release
+# rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+
+//ps命令是最基本同时也是非常强大的进程查看命令。使用该命令可以确定有哪些进程正在运行和运行的状态、进程是否结束、进程有没有僵尸、哪些进程占用了过多的资源等等.总之大部分信息都是可以通过执行该命令得到的.
+//显示其他用户启动的进程（a）查看系统中属于自己的进程（x）启动这个进程的用户和它启动的时间（u）
+ps aux | grep httpd
+
+//安装httpd(nginx/1.10.2)
+rpm -ql nginx //会列出软件安装列表rpm -ql nginx //会列出软件安装列表
+yum install nginx(安装NGINX)// nginx.x86_64 1:1.10.2-1.e17
+
+//安装mysql
+安装mysql(mysqld 5.6.35)
+yum install mysql
+
+修改mysql密码
+use mysql;
+update user set password = PASSWORD('TEST') WHERE User = 'root';
+flush privileges;//刷新权限
+
+使用客户端登陆mysql
+grant all privileges on *.* to root@'%' identified by '751011029' with grant option;
+
+安装PHP(PHP 5.6.30)
+yum install php56-php-fpm
+yum install php56
+systemctl restart php56-php-fpm.service
+
+
+
+
+

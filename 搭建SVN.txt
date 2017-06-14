@@ -1,0 +1,71 @@
+1、yum -y install subversion
+
+2、rpm -ql subversion
+//建立版本库目录
+mkdir svndata
+
+svnserve -d -r svndata //D．-d 表示svnserve.exe 将会作为一个服务程序运行在后台 另外 -r表示把d:\svn目录作为根目录
+//创建一个项目
+svnadmin create svndata/opencart
+//修改配置
+vi svnserve.conf
+anon-access=none//不允许匿名访问
+auth-access=write//允许写入
+password-db=passwd//访问时需要输入密码
+vi passwd//添加用户
+
+6.实现SVN与WEB同步,可以CO一个出来,也可以直接配在仓库中
+
+1)设置WEB服务器根目录为/var/www/webroot
+
+2)checkout一份SVN
+
+svn co svn://localhost/njlrxx /var/www/webroot/njlrxx
+
+修改权限为WEB用户
+
+chown -R apache:apache /var/www/webroot/njlrxx
+
+3)建立同步脚本
+
+cd /var/www/svndata/njlrxx/hooks/
+
+cp post-commit.tmpl post-commit
+
+编辑post-commit,在文件最后添加以下内容
+复制代码
+
+REPOS="$1"
+REV="$2"
+
+BASEPATH=/var/www/webroot/njlrxx
+WEBPATH="$BASEPATH/"
+export LANG=zh_CN.UTF-8
+svn update $WEBPATH --username jiqing --password 123456 --no-auth-cache
+
+复制代码
+
+ 
+增加脚本执行权限
+
+chmod +x post-commit
+
+最后操作是关闭服务然再打开服务:
+
+svn服务的关闭：
+
+killall svnserve
+
+svn开启：
+
+svnserve -d -r /var/www/svndata
+
+ 
+
+===============================================================
+
+SVN自动同步程序执行流程：
+1、用户提交文件到SVN服务器，提交操作成功后触发post-commit脚本
+2、在post-commit版本文件中使用php_script.php执行PHP脚本
+3、在PHP脚本中通过exec系统调用更新服务器上的版本库工作副本
+4、根据更新操作结果日志，对另一个SVN版本库进行对应的操作处理
